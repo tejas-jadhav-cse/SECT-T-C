@@ -517,19 +517,7 @@
                 content.classList.toggle('show');
             });
         });
-        
-        // Accept button animation
-        const acceptBtn = document.getElementById('acceptBtn');
-        
-        acceptBtn.addEventListener('click', () => {
-            acceptBtn.classList.remove('animate__pulse', 'animate__infinite');
-            acceptBtn.classList.add('animate__tada');
-            
-            setTimeout(() => {
-                acceptBtn.textContent = 'Terms Accepted ✓';
-                acceptBtn.style.backgroundColor = '#4CAF50';
-            }, 1000);
-        });
+          // Accept button animation code removed
         
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
