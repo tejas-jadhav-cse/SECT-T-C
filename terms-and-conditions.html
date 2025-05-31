@@ -7,45 +7,60 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+        
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #e0e0e0;
+            --text-secondary: #aaaaaa;
+            --accent: #bb86fc;
+            --accent-hover: #9664db;
+            --border-color: #333333;
+            --toc-bg: #252525;
         }
         
         body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background-color: #f9fafb;
+            color: var(--text-primary);
+            background-color: var(--bg-color);
             padding: 0;
             margin: 0;
+            scroll-behavior: smooth;
         }
         
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 2rem 1.5rem;
-            background-color: #fff;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            background-color: var(--card-bg);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        
-        header {
+          header {
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
-            border-bottom: 1px solid #eaeaea;
+            border-bottom: 1px solid var(--border-color);
+            animation: fadeInDown 1s;
         }
         
         h1 {
             font-size: 2.25rem;
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #111827;
+            color: var(--accent);
+            text-shadow: 0 0 10px rgba(187, 134, 252, 0.3);
         }
         
         .updated-date {
-            color: #6b7280;
+            color: var(--text-secondary);
             font-size: 0.9rem;
             margin-bottom: 1.5rem;
         }
@@ -53,41 +68,60 @@
         .introduction {
             margin-bottom: 2rem;
             font-size: 1rem;
-            color: #4b5563;
+            color: var(--text-secondary);
+            animation: fadeIn 1.2s;
         }
         
         .section {
             margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
         
         h2 {
             font-size: 1.5rem;
             font-weight: 600;
             margin-bottom: 1rem;
-            color: #111827;
+            color: var(--text-primary);
+            border-left: 3px solid var(--accent);
+            padding-left: 10px;
         }
         
         .subsection {
             margin-bottom: 1rem;
+            transition: background-color 0.3s ease;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .subsection:hover {
+            background-color: rgba(187, 134, 252, 0.05);
         }
         
         .subsection-title {
             font-weight: 600;
             margin-bottom: 0.5rem;
+            color: var(--accent);
         }
         
         p {
             margin-bottom: 1rem;
-            color: #4b5563;
+            color: var(--text-secondary);
         }
-        
-        footer {
+          footer {
             margin-top: 3rem;
             padding-top: 1.5rem;
-            border-top: 1px solid #eaeaea;
+            border-top: 1px solid var(--border-color);
             text-align: center;
-            color: #6b7280;
+            color: var(--text-secondary);
             font-size: 0.875rem;
+            animation: fadeInUp 1s;
         }
         
         @media (max-width: 640px) {
@@ -109,7 +143,7 @@
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background-color: #4f46e5;
+            background-color: var(--accent);
             color: white;
             width: 3rem;
             height: 3rem;
@@ -119,26 +153,38 @@
             justify-content: center;
             text-decoration: none;
             opacity: 0;
-            transition: opacity 0.3s;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s;
+            box-shadow: 0 2px 12px rgba(187, 134, 252, 0.4);
+            z-index: 100;
+            transform: translateY(20px);
         }
         
         .back-to-top.visible {
             opacity: 1;
+            transform: translateY(0);
+        }
+
+        .back-to-top:hover {
+            background-color: var(--accent-hover);
+            box-shadow: 0 4px 15px rgba(187, 134, 252, 0.6);
+            transform: scale(1.1);
         }
 
         /* Table of contents */
         .toc {
-            background-color: #f3f4f6;
+            background-color: var(--toc-bg);
             padding: 1.5rem;
             border-radius: 0.5rem;
             margin-bottom: 2rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
+            animation: fadeInUp 1.5s;
         }
         
         .toc-title {
             font-weight: 600;
             margin-bottom: 1rem;
-            color: #111827;
+            color: var(--accent);
         }
         
         .toc-list {
@@ -147,22 +193,105 @@
         
         .toc-list li {
             margin-bottom: 0.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .toc-list li:hover {
+            transform: translateX(5px);
         }
         
         .toc-list a {
-            color: #4f46e5;
+            color: var(--text-primary);
             text-decoration: none;
-            transition: color 0.2s;
+            transition: all 0.3s;
+            display: block;
+            padding: 5px 0;
         }
         
         .toc-list a:hover {
-            color: #4338ca;
-            text-decoration: underline;
+            color: var(--accent);
+            text-decoration: none;
         }
-    </style>
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Interactive elements */
+        .collapse-toggle {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .collapse-toggle::after {
+            content: '+';
+            font-size: 1.5rem;
+            transition: transform 0.3s;
+        }
+        
+        .collapse-toggle.active::after {
+            transform: rotate(45deg);
+        }
+        
+        .collapse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        
+        .collapse-content.show {
+            max-height: 1000px;
+        }
+        
+        /* Progress bar */
+        .progress-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: transparent;
+            z-index: 1000;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent), #c77dff);
+            width: 0%;
+        }    </style>
 </head>
 <body>
-    <div class="container">
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div class="container animate__animated animate__fadeIn">
         <header>
             <h1>Terms and Conditions</h1>
             <div class="updated-date">Last updated: June 1, 2025</div>
@@ -172,146 +301,158 @@
             <div class="toc">
                 <div class="toc-title">Table of Contents</div>
                 <ol class="toc-list">
-                    <li><a href="#ownership">Ownership and Authority</a></li>
-                    <li><a href="#participation">Participation and Commitment</a></li>
-                    <li><a href="#ip">Intellectual Property & Confidentiality</a></li>
-                    <li><a href="#permissions">Permissions and Right to Amend</a></li>
-                    <li><a href="#noncompete">Non-Compete and Representation</a></li>
-                    <li><a href="#publicity">Publicity and Media Consent</a></li>
-                    <li><a href="#data">Data Handling and Privacy</a></li>
-                    <li><a href="#termination">Termination Clause</a></li>
-                    <li><a href="#jurisdiction">Jurisdiction and Disputes</a></li>
-                    <li><a href="#final">Final Agreement</a></li>
+                    <li><a href="#ownership" class="animate__animated animate__fadeIn">Ownership and Authority</a></li>
+                    <li><a href="#participation" class="animate__animated animate__fadeIn" style="animation-delay: 0.1s">Participation and Commitment</a></li>
+                    <li><a href="#ip" class="animate__animated animate__fadeIn" style="animation-delay: 0.2s">Intellectual Property & Confidentiality</a></li>
+                    <li><a href="#permissions" class="animate__animated animate__fadeIn" style="animation-delay: 0.3s">Permissions and Right to Amend</a></li>
+                    <li><a href="#noncompete" class="animate__animated animate__fadeIn" style="animation-delay: 0.4s">Non-Compete and Representation</a></li>
+                    <li><a href="#publicity" class="animate__animated animate__fadeIn" style="animation-delay: 0.5s">Publicity and Media Consent</a></li>
+                    <li><a href="#data" class="animate__animated animate__fadeIn" style="animation-delay: 0.6s">Data Handling and Privacy</a></li>
+                    <li><a href="#termination" class="animate__animated animate__fadeIn" style="animation-delay: 0.7s">Termination Clause</a></li>
+                    <li><a href="#jurisdiction" class="animate__animated animate__fadeIn" style="animation-delay: 0.8s">Jurisdiction and Disputes</a></li>
+                    <li><a href="#final" class="animate__animated animate__fadeIn" style="animation-delay: 0.9s">Final Agreement</a></li>
                 </ol>
             </div>
-        </header>
-
-        <div class="section" id="ownership">
-            <h2>1. Ownership and Authority</h2>
-            <div class="subsection">
-                <p class="subsection-title">1.1.</p>
-                <p>All rights, ownership, intellectual property, branding, strategies, content, codebases, documents, and outputs related to the SECT Internship Program are exclusively owned by SECT, a student community/initiative.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">1.2.</p>
-                <p>Full administrative, editorial, and operational control of SECT is solely held by Tejas Jadhav, Founder and Owner. He reserves the right to modify, amend, suspend, or terminate any part of the internship program, documentation, or its affiliated systems at any time without prior notice.</p>
+        </header>        <div class="section" id="ownership">
+            <h2 class="collapse-toggle">1. Ownership and Authority</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">1.1.</p>
+                    <p>All rights, ownership, intellectual property, branding, strategies, content, codebases, documents, and outputs related to the SECT Internship Program are exclusively owned by SECT, a student community/initiative.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">1.2.</p>
+                    <p>Full administrative, editorial, and operational control of SECT is solely held by Tejas Jadhav, Founder and Owner. He reserves the right to modify, amend, suspend, or terminate any part of the internship program, documentation, or its affiliated systems at any time without prior notice.</p>
+                </div>
             </div>
         </div>
 
         <div class="section" id="participation">
-            <h2>2. Participation and Commitment</h2>
-            <div class="subsection">
-                <p class="subsection-title">2.1.</p>
-                <p>Participation in the Program is voluntary and subject to approval by SECT management. Acceptance into the program does not create any employment or contractual obligation on SECT or its founder.</p>
+            <h2 class="collapse-toggle">2. Participation and Commitment</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">2.1.</p>
+                    <p>Participation in the Program is voluntary and subject to approval by SECT management. Acceptance into the program does not create any employment or contractual obligation on SECT or its founder.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">2.2.</p>
+                    <p>Selected interns are expected to actively participate in assignments, projects, team discussions, and other collaborative tasks.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">2.3.</p>
+                    <p>Interns are expected to maintain professional conduct, adhere to deadlines, and respect the confidentiality and proprietary nature of work.</p>
+                </div>
             </div>
-            <div class="subsection">
-                <p class="subsection-title">2.2.</p>
-                <p>Selected interns are expected to actively participate in assignments, projects, team discussions, and other collaborative tasks.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">2.3.</p>
-                <p>Interns are expected to maintain professional conduct, adhere to deadlines, and respect the confidentiality and proprietary nature of work.</p>
-            </div>
-        </div>
-
-        <div class="section" id="ip">
-            <h2>3. Intellectual Property & Confidentiality</h2>
-            <div class="subsection">
-                <p class="subsection-title">3.1.</p>
-                <p>All work created, developed, or contributed to during the internship (including but not limited to code, designs, content, strategies, proposals, and innovations) shall remain the sole intellectual property of SECT.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">3.2.</p>
-                <p>Interns waive all rights to claim ownership, authorship, or licensing of any kind over work done during the internship.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">3.3.</p>
-                <p>Interns shall not disclose, share, or reproduce any internal material, documentation, or communication from SECT to any third party without explicit written permission from the founder.</p>
+        </div>        <div class="section" id="ip">
+            <h2 class="collapse-toggle">3. Intellectual Property & Confidentiality</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">3.1.</p>
+                    <p>All work created, developed, or contributed to during the internship (including but not limited to code, designs, content, strategies, proposals, and innovations) shall remain the sole intellectual property of SECT.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">3.2.</p>
+                    <p>Interns waive all rights to claim ownership, authorship, or licensing of any kind over work done during the internship.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">3.3.</p>
+                    <p>Interns shall not disclose, share, or reproduce any internal material, documentation, or communication from SECT to any third party without explicit written permission from the founder.</p>
+                </div>
             </div>
         </div>
 
         <div class="section" id="permissions">
-            <h2>4. Permissions and Right to Amend</h2>
-            <div class="subsection">
-                <p class="subsection-title">4.1.</p>
-                <p>Tejas Jadhav, as the legal owner and founder of SECT, reserves unconditional authority to:</p>
-                <ul style="margin-left: 2rem; margin-bottom: 1rem;">
-                    <li>Modify or cancel any part of the internship structure</li>
-                    <li>Reassign roles or domains at any point</li>
-                    <li>Use any outputs or content created by the intern in any capacity including public or commercial use</li>
-                    <li>Disqualify or remove any intern based on performance, misconduct, or misrepresentation</li>
-                </ul>
+            <h2 class="collapse-toggle">4. Permissions and Right to Amend</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">4.1.</p>
+                    <p>Tejas Jadhav, as the legal owner and founder of SECT, reserves unconditional authority to:</p>
+                    <ul style="margin-left: 2rem; margin-bottom: 1rem; color: var(--text-secondary);">
+                        <li>Modify or cancel any part of the internship structure</li>
+                        <li>Reassign roles or domains at any point</li>
+                        <li>Use any outputs or content created by the intern in any capacity including public or commercial use</li>
+                        <li>Disqualify or remove any intern based on performance, misconduct, or misrepresentation</li>
+                    </ul>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">4.2.</p>
+                    <p>All decisions taken by the Founder are final and non-contestable.</p>
+                </div>
             </div>
-            <div class="subsection">
-                <p class="subsection-title">4.2.</p>
-                <p>All decisions taken by the Founder are final and non-contestable.</p>
-            </div>
-        </div>
-
-        <div class="section" id="noncompete">
-            <h2>5. Non-Compete and Representation</h2>
-            <div class="subsection">
-                <p class="subsection-title">5.1.</p>
-                <p>Interns agree not to participate in or promote any parallel organization, community, or internship that may be deemed competitive with SECT without written consent.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">5.2.</p>
-                <p>Interns shall not represent SECT or its affiliated programs externally without prior approval.</p>
+        </div>        <div class="section" id="noncompete">
+            <h2 class="collapse-toggle">5. Non-Compete and Representation</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">5.1.</p>
+                    <p>Interns agree not to participate in or promote any parallel organization, community, or internship that may be deemed competitive with SECT without written consent.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">5.2.</p>
+                    <p>Interns shall not represent SECT or its affiliated programs externally without prior approval.</p>
+                </div>
             </div>
         </div>
 
         <div class="section" id="publicity">
-            <h2>6. Publicity and Media Consent</h2>
-            <div class="subsection">
-                <p class="subsection-title">6.1.</p>
-                <p>SECT reserves the right to use names, images, social media handles, submitted bios, and project summaries of interns for promotional, reporting, and archival purposes across platforms.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">6.2.</p>
-                <p>By registering, you grant SECT and its founder the right to publish and promote your work as part of the community's impact and outcomes.</p>
+            <h2 class="collapse-toggle">6. Publicity and Media Consent</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">6.1.</p>
+                    <p>SECT reserves the right to use names, images, social media handles, submitted bios, and project summaries of interns for promotional, reporting, and archival purposes across platforms.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">6.2.</p>
+                    <p>By registering, you grant SECT and its founder the right to publish and promote your work as part of the community's impact and outcomes.</p>
+                </div>
             </div>
         </div>
 
         <div class="section" id="data">
-            <h2>7. Data Handling and Privacy</h2>
-            <div class="subsection">
-                <p class="subsection-title">7.1.</p>
-                <p>Personal data shared through the registration form shall be used strictly for internal evaluation, communication, and program operation.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">7.2.</p>
-                <p>SECT will not sell or misuse intern data but may use it for showcasing impact, alumni updates, or internal analytics.</p>
+            <h2 class="collapse-toggle">7. Data Handling and Privacy</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">7.1.</p>
+                    <p>Personal data shared through the registration form shall be used strictly for internal evaluation, communication, and program operation.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">7.2.</p>
+                    <p>SECT will not sell or misuse intern data but may use it for showcasing impact, alumni updates, or internal analytics.</p>
+                </div>
             </div>
         </div>
 
         <div class="section" id="termination">
-            <h2>8. Termination Clause</h2>
-            <div class="subsection">
-                <p class="subsection-title">8.1.</p>
-                <p>SECT retains the right to terminate an intern's participation at any stage due to non-compliance, plagiarism, unethical behavior, inactivity, or other reasons deemed valid by the Founder.</p>
-            </div>
-            <div class="subsection">
-                <p class="subsection-title">8.2.</p>
-                <p>Termination shall not entitle the intern to any claim, certificate, or usage rights of prior contributions unless otherwise specified in writing.</p>
+            <h2 class="collapse-toggle">8. Termination Clause</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">8.1.</p>
+                    <p>SECT retains the right to terminate an intern's participation at any stage due to non-compliance, plagiarism, unethical behavior, inactivity, or other reasons deemed valid by the Founder.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">8.2.</p>
+                    <p>Termination shall not entitle the intern to any claim, certificate, or usage rights of prior contributions unless otherwise specified in writing.</p>
+                </div>
             </div>
         </div>
 
         <div class="section" id="jurisdiction">
-            <h2>9. Jurisdiction and Disputes</h2>
-            <div class="subsection">
-                <p class="subsection-title">9.1.</p>
-                <p>This Agreement shall be governed in accordance with Indian Laws.</p>
+            <h2 class="collapse-toggle">9. Jurisdiction and Disputes</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p class="subsection-title">9.1.</p>
+                    <p>This Agreement shall be governed in accordance with Indian Laws.</p>
+                </div>
+                <div class="subsection">
+                    <p class="subsection-title">9.2.</p>
+                    <p>Any dispute arising out of or related to the internship or these terms shall be subject to the exclusive jurisdiction of the courts located in Nashik, Maharashtra, where the headquarters of SECT is located.</p>
+                </div>
             </div>
-            <div class="subsection">
-                <p class="subsection-title">9.2.</p>
-                <p>Any dispute arising out of or related to the internship or these terms shall be subject to the exclusive jurisdiction of the courts located in Nashik, Maharashtra, where the headquarters of SECT is located.</p>
-            </div>
-        </div>
-
-        <div class="section" id="final">
-            <h2>10. Final Agreement</h2>
-            <div class="subsection">
-                <p>By submitting the internship registration form, you acknowledge that you have read, understood, and agreed to all the terms and conditions stated herein. You also confirm that you are providing accurate information and are voluntarily opting to participate under the authority and structure defined by Tejas Jadhav and the SECT initiative.</p>
+        </div>        <div class="section" id="final">
+            <h2 class="collapse-toggle">10. Final Agreement</h2>
+            <div class="collapse-content show">
+                <div class="subsection">
+                    <p>By submitting the internship registration form, you acknowledge that you have read, understood, and agreed to all the terms and conditions stated herein. You also confirm that you are providing accurate information and are voluntarily opting to participate under the authority and structure defined by Tejas Jadhav and the SECT initiative.</p>
+                </div>
             </div>
         </div>
 
@@ -323,6 +464,21 @@
     <a href="#" class="back-to-top" id="back-to-top">↑</a>
 
     <script>
+        // IntersectionObserver for section animations
+        const sections = document.querySelectorAll('.section');
+        
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+        
         // Back to top button functionality
         const backToTopButton = document.getElementById('back-to-top');
         
@@ -337,6 +493,70 @@
         backToTopButton.addEventListener('click', (e) => {
             e.preventDefault();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+        
+        // Progress bar
+        const progressBar = document.getElementById('progressBar');
+        
+        window.addEventListener('scroll', () => {
+            const windowHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight - windowHeight;
+            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const scrollPercent = (scrollTop / documentHeight) * 100;
+            
+            progressBar.style.width = scrollPercent + '%';
+        });
+        
+        // Collapsible sections
+        const toggles = document.querySelectorAll('.collapse-toggle');
+        
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                toggle.classList.toggle('active');
+                const content = toggle.nextElementSibling;
+                content.classList.toggle('show');
+            });
+        });
+        
+        // Accept button animation
+        const acceptBtn = document.getElementById('acceptBtn');
+        
+        acceptBtn.addEventListener('click', () => {
+            acceptBtn.classList.remove('animate__pulse', 'animate__infinite');
+            acceptBtn.classList.add('animate__tada');
+            
+            setTimeout(() => {
+                acceptBtn.textContent = 'Terms Accepted ✓';
+                acceptBtn.style.backgroundColor = '#4CAF50';
+            }, 1000);
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const target = document.querySelector(targetId);
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    
+                    // Highlight the section briefly
+                    setTimeout(() => {
+                        target.style.transition = 'background-color 0.5s';
+                        target.style.backgroundColor = 'rgba(187, 134, 252, 0.1)';
+                        
+                        setTimeout(() => {
+                            target.style.backgroundColor = 'transparent';
+                        }, 1000);
+                    }, 500);
+                }
+            });
         });
     </script>
 </body>
